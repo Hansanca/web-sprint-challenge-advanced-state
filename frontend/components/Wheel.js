@@ -6,30 +6,40 @@ export default function Wheel() {
   const dispatch = useDispatch();
   const wheel = useSelector((state) => state.wheel);
 
+  const handleMoveCounterClockwise = () => {
+    if (wheel === 0) {
+      dispatch(moveCounterClockwise(5));
+    } else {
+      dispatch(moveCounterClockwise(wheel - 1));
+    }
+  };
+
+  const handleMoveClockwise = () => {
+    if (wheel === 5) {
+      dispatch(moveClockwise(0));
+    } else {
+      dispatch(moveClockwise(wheel + 1));
+    }
+  };
+
   return (
     <div id="wrapper">
       <div id="wheel">
-        <div className="cog active" style={{ "--i": 0 }}>
-          B
-        </div>
-        <div className="cog" style={{ "--i": 1 }}></div>
-        <div className="cog" style={{ "--i": 2 }}></div>
-        <div className="cog" style={{ "--i": 3 }}></div>
-        <div className="cog" style={{ "--i": 4 }}></div>
-        <div className="cog" style={{ "--i": 5 }}></div>
-        {/* --i is a custom CSS property, no need to touch that nor the style object */}
+        {[0, 1, 2, 3, 4, 5].map((number) => {
+          return (
+            <div
+              key={number}
+              className={`cog ${number === wheel ? "active" : ""}`}
+              style={{ "--i": number }}
+            >{number === wheel ? "B" : ""}</div>
+          );
+        })}
       </div>
       <div id="keypad">
-        <button
-          id="counterClockwiseBtn"
-          onClick={() => dispatch(moveCounterClockwise(wheel - 1))}
-        >
+        <button id="counterClockwiseBtn" onClick={handleMoveCounterClockwise}>
           Counter clockwise
         </button>
-        <button
-          id="clockwiseBtn"
-          onClick={() => dispatch(moveClockwise(wheel + 1))}
-        >
+        <button id="clockwiseBtn" onClick={handleMoveClockwise}>
           Clockwise
         </button>
       </div>

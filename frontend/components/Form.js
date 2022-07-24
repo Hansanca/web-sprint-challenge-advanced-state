@@ -6,6 +6,21 @@ export default function Form() {
   const dispatch = useDispatch();
   const form = useSelector((state) => state.form);
 
+  const validate = () => {
+    const error = {};
+    if (!form.newQuestion.trim()) {
+      error.newQuestion = true;
+    }
+    if (!form.newTrueAnswer.trim()) {
+      error.newTrueAnswer = true;
+    }
+    if (!form.newFalseAnswer.trim()) {
+      error.newFalseAnswer = true;
+    }
+
+    return Object.keys(error).length !== 0;
+  };
+
   const onChange = (evt) => {
     dispatch(inputChange({ [evt.target.id]: evt.target.value }));
   };
@@ -39,7 +54,7 @@ export default function Form() {
         placeholder="Enter false answer"
         value={form.newFalseAnswer}
       />
-      <button id="submitNewQuizBtn" onClick={onSubmit}>
+      <button id="submitNewQuizBtn" disabled={validate()} onClick={onSubmit}>
         Submit new quiz
       </button>
     </form>

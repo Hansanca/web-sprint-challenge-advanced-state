@@ -64,7 +64,7 @@ function form(state = initialFormState, action) {
     case RESET_FORM:
       return { ...state };
     default:
-      return state;
+      return initialFormState;
   }
 }
 

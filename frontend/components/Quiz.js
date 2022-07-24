@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchQuiz, selectAnswer, postAnswer } from "../state/action-creators";
 
@@ -7,10 +7,12 @@ export default function Quiz() {
   const quiz = useSelector((state) => state.quiz);
   const selectedAnswer = useSelector((state) => state.selectedAnswer);
 
-  useEffect(()=>{
-    dispatch(fetchQuiz())
-  },[])
-  
+  useEffect(() => {
+    if(!selectedAnswer){
+      dispatch(fetchQuiz());
+    }
+  }, [selectedAnswer]);
+
   const onSelect = (answerId) => {
     dispatch(selectAnswer(answerId));
   };
@@ -29,22 +31,25 @@ export default function Quiz() {
 
             <div id="quizAnswers">
               {quiz.answers.map((answer) => {
-                <div
-                  className={`answer ${
-                    answer.answer_id === selectedAnswer ? "selected" : ""
-                  }`}
-                >
-                  {answer.text}
-                  <button onClick={() => onSelect(answer.answer_id)}>
-                    {answer.answer_id === selectedAnswer
-                      ? "SELECTED"
-                      : "Select"}
-                  </button>
-                </div>;
+                return (
+                  <div
+                    key={answer.answer_id}
+                    className={`answer ${
+                      answer.answer_id === selectedAnswer ? "selected" : ""
+                    }`}
+                  >
+                    {answer.text}
+                    <button onClick={() => onSelect(answer.answer_id)}>
+                      {answer.answer_id === selectedAnswer
+                        ? "SELECTED"
+                        : "Select"}
+                    </button>
+                  </div>
+                );
               })}
             </div>
 
-            <button id="submitAnswerBtn" onClick={() => onSubmit(quiz.quiz_id)}>
+            <button id="submitAnswerBtn" disabled={!selectedAnswer} onClick={() => onSubmit(quiz.quiz_id)}>
               Submit answer
             </button>
           </>
