@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchQuiz, selectAnswer, postAnswer } from "../state/action-creators";
 
+
+//test
+
 export default function Quiz() {
   const dispatch = useDispatch();
   const quiz = useSelector((state) => state.quiz);
